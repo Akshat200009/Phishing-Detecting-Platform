@@ -1,0 +1,39 @@
+package com.phishing.urlAnalysis.DTO;
+
+import java.time.LocalDateTime;
+
+public class UrlScanResponse {
+    private Long id;
+    private String url;
+    private boolean valid;
+    private String status;
+    private LocalDateTime scannedAt;
+
+    public UrlScanResponse(Long id, String url, boolean valid, String status, LocalDateTime scannedAt){
+        this.id = id;
+        this.url = url;
+        this.valid = valid;
+        this.status = status;
+        this.scannedAt = scannedAt;
+    }
+
+    public String getUrl(){
+        return url;
+    }
+
+    public boolean isValid(){
+        return valid;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getScannedAt() {
+        return scannedAt;
+    }
+}
