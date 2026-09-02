@@ -10,22 +10,28 @@ public class UrlAnalysisService {
     private final UrlValidationService urlValidationService;
     private final UrlScanRepository urlScanRepository;
     private final HttpsCheckService httpsCheckService;
+    private final KeywordDetectionService keywordDetectionService;
 
     public UrlAnalysisService(UrlValidationService urlValidationService,
                               UrlScanRepository urlScanRepository,
-                              HttpsCheckService httpsCheckService){
+                              HttpsCheckService httpsCheckService,
+                              KeywordDetectionService keywordDetectionService){
         this.urlValidationService = urlValidationService;
         this.urlScanRepository = urlScanRepository;
         this.httpsCheckService = httpsCheckService;
+        this.keywordDetectionService = keywordDetectionService;
     }
 
     public UrlScanResponse analyzeUrl(String url){
         boolean valid = urlValidationService.isValidUrl(url);
         boolean https = valid && httpsCheckService.isHttps(url);
+        boolean suspiciousKeyword = valid && keywordDetectionService.containsSuspiciousKeyword(url);
         String status;
 
         if (!valid){
             status = "INVALID";
+        } else if (suspiciousKeyword) {
+            status = "SUSPICIOUS";
         } else if (!https) {
             status = "SUSPICIOUS";
         } else {
