@@ -1,7 +1,7 @@
 package com.phishing.urlAnalysis.controller;
 
-import com.phishing.urlAnalysis.DTO.UrlScanRequest;
-import com.phishing.urlAnalysis.DTO.UrlScanResponse;
+import com.phishing.urlAnalysis.dto.UrlScanRequest;
+import com.phishing.urlAnalysis.dto.UrlScanResponse;
 import com.phishing.urlAnalysis.service.UrlAnalysisService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

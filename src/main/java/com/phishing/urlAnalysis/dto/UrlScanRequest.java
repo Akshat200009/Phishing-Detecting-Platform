@@ -1,4 +1,4 @@
-package com.phishing.urlAnalysis.DTO;
+package com.phishing.urlAnalysis.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
