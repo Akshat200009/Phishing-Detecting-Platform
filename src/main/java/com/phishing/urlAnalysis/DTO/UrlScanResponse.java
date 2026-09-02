@@ -8,13 +8,16 @@ public class UrlScanResponse {
     private boolean valid;
     private String status;
     private LocalDateTime scannedAt;
+    private boolean https;
 
-    public UrlScanResponse(Long id, String url, boolean valid, String status, LocalDateTime scannedAt){
+    public UrlScanResponse(Long id, String url, boolean valid,
+                           String status, LocalDateTime scannedAt, boolean https){
         this.id = id;
         this.url = url;
         this.valid = valid;
         this.status = status;
         this.scannedAt = scannedAt;
+        this.https = https;
     }
 
     public String getUrl(){
@@ -35,5 +38,9 @@ public class UrlScanResponse {
 
     public LocalDateTime getScannedAt() {
         return scannedAt;
+    }
+
+    public boolean isHttps() {
+        return https;
     }
 }

@@ -20,14 +20,15 @@ public class UrlScan {
     @Column(nullable = false)
     private LocalDateTime scannedAt;
 
-    public UrlScan(){
+    @Column(nullable = false)
+    private boolean https;
 
-    }
 
-    public UrlScan(String url, String status){
+    public UrlScan(String url, String status, boolean https){
         this.url = url;
         this.status = status;
         this.scannedAt = LocalDateTime.now();
+        this.https = https;
     }
 
     public Long getId(){
