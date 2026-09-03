@@ -13,19 +13,22 @@ public class UrlAnalysisService {
     private final KeywordDetectionService keywordDetectionService;
     private final DomainAnalysisService domainAnalysisService;
     private final IpDetectionService ipDetectionService;
+    private final VirusTotalService virusTotalService;
 
     public UrlAnalysisService(UrlValidationService urlValidationService,
                               UrlScanRepository urlScanRepository,
                               HttpsCheckService httpsCheckService,
                               KeywordDetectionService keywordDetectionService,
                               DomainAnalysisService domainAnalysisService,
-                              IpDetectionService ipDetectionService){
+                              IpDetectionService ipDetectionService,
+                              VirusTotalService virusTotalService){
         this.urlValidationService = urlValidationService;
         this.urlScanRepository = urlScanRepository;
         this.httpsCheckService = httpsCheckService;
         this.keywordDetectionService = keywordDetectionService;
         this.domainAnalysisService = domainAnalysisService;
         this.ipDetectionService = ipDetectionService;
+        this.virusTotalService = virusTotalService;
     }
 
     public UrlScanResponse analyzeUrl(String url){
@@ -40,9 +43,16 @@ public class UrlAnalysisService {
 
         String resolveIp = valid ? ipDetectionService.resolveIpAddress(url) : null;
 
+        VirusTotalService.VirusTotalResult virusTotalResult =
+                valid
+                ? virusTotalService.scanUrl(url)
+                        : VirusTotalService.VirusTotalResult.unavailable();
+
         if (!valid){
             status = "INVALID";
-        } else if (suspiciousKeyword || suspiciousDomain || !https) {
+        } else if (virusTotalResult.isMalicious()) {
+            status = "MALICIOUS";
+        } else if (suspiciousKeyword || suspiciousDomain || !https || virusTotalResult.isSuspicious()) {
             status = "SUSPICIOUS";
         } else {
             status = "SAFE";
