@@ -8,6 +8,7 @@ public class PhishingDetectionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhishingDetectionApplication.class, args);
+		System.out.println("Server Started SuccessFully!!!");
 	}
 
 }
