@@ -40,6 +40,7 @@ public class AuthService {
 		user.setPassword(hashedPassword);
 		user.setRole(Role.USER);
 		user.setCreatedAt(LocalDateTime.now());
+		user.setActive(true);
 		
 		return userRepo.save(user);
 	}

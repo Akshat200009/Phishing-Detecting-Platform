@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailAnalysisService {
     private final KeywordDetectionService keywordDetectionService;
+    private final UrgencyDetectionService urgencyDetectionService;
 
-    public EmailAnalysisService( KeywordDetectionService keywordDetectionService){
+    public EmailAnalysisService( KeywordDetectionService keywordDetectionService,
+                                 UrgencyDetectionService urgencyDetectionService){
         this.keywordDetectionService = keywordDetectionService;
+        this.urgencyDetectionService = urgencyDetectionService;
     }
 
     public void analyzeEmail(EmailAnalysisRequest request) {
@@ -18,6 +21,11 @@ public class EmailAnalysisService {
                         request.getSubject(),
                         request.getBody()
                 );
+        boolean urgencyDetected  = urgencyDetectionService.containsUrgency(
+                request.getSubject(),
+                request.getBody()
+        );
         System.out.println("Suspicious Keyword: " + suspiciousKeyword);
+        System.out.println("Urgency detected: " + urgencyDetected);
     }
 }
