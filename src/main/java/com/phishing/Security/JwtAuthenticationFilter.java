@@ -3,6 +3,7 @@ package com.phishing.Security;
 import com.phishing.Entities.User;
 import com.phishing.Repositories.UserRepository;
 import com.phishing.Services.JwtService;
+import com.phishing.Services.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,13 +23,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            TokenBlacklistService tokenBlacklistService) {
 
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.tokenBlacklistService=tokenBlacklistService;
     }
 
     @Override
@@ -47,10 +51,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        
 
         String token =
                 authorizationHeader.substring(7);
 
+        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+        	
+        	System.out.println("JWT token has been logged out");
+        	
+        	filterChain.doFilter(request, response);
+        	return;
+        }
+        
         try {
 
             String email = jwtService.extractEmail(token);
@@ -63,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .findByEmail(email)
                         .orElse(null);
 
-                if (user != null) {
+                if (user != null && user.isActive()) {
 
                     SimpleGrantedAuthority authority =
                             new SimpleGrantedAuthority(

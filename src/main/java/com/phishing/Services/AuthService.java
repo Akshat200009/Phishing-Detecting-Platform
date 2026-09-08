@@ -53,6 +53,12 @@ public class AuthService {
 	                            "Invalid email or password"
 	                    )
 	            );
+	    
+	    if (!user.isActive()) {
+	        throw new IllegalArgumentException(
+	                "Your account has been deactivated"
+	        );
+	    }
 
 	    boolean passwordMatches =
 	            passenc.matches(

@@ -13,7 +13,9 @@ import com.phishing.DTO.RegisterRequest;
 import com.phishing.DTO.RegisterResponse;
 import com.phishing.Entities.User;
 import com.phishing.Services.AuthService;
+import com.phishing.Services.TokenBlacklistService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -21,9 +23,11 @@ import jakarta.validation.Valid;
 public class AuthController {
 
 	private final AuthService authService;
+	private final TokenBlacklistService tokenBlacklistService;
 
-	public AuthController(AuthService authService) {
+	public AuthController(AuthService authService, TokenBlacklistService tokenBlacklistService) {
 		this.authService = authService;
+		this.tokenBlacklistService=tokenBlacklistService;
 	}
 
 	// ----- Register User API-------------------------------------
@@ -52,5 +56,27 @@ public class AuthController {
 		LoginResponse response = new LoginResponse(token, "bearer");
 		return ResponseEntity.ok(response);
 	}
+    
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(
+            HttpServletRequest request) {
+
+        String authorizationHeader =
+                request.getHeader("Authorization");
+
+        if (authorizationHeader == null ||
+                !authorizationHeader.startsWith("Bearer ")) {
+
+            return ResponseEntity.badRequest()
+                    .body("Authorization token is required");
+        }
+
+        String token =
+                authorizationHeader.substring(7);
+
+        tokenBlacklistService.blacklistToken(token);
+
+        return ResponseEntity.ok("Logout successful");
+    }
 
 }
