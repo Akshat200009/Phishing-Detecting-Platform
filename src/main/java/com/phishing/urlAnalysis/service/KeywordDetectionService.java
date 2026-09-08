@@ -35,4 +35,11 @@ public class KeywordDetectionService {
         String normalizedUrl = url.toLowerCase(Locale.ROOT);
         return suspiciousKeywords.stream().anyMatch(normalizedUrl::contains);
     }
+    public boolean containsSuspiciousKeyword(String subject, String body){
+        String content = (subject == null ? "" : subject)
+                + " "
+                + (body == null ? "" : body);
+        return containsSuspiciousKeyword(content);
+
+    }
 }

@@ -19,6 +19,7 @@ public class EmailAnalysisController {
 
     @PostMapping("/scan")
     public String scanEmail(@Valid @RequestBody EmailAnalysisRequest request){
+        emailAnalysisService.analyzeEmail(request);
         return "Email analysis started";
     }
 }
