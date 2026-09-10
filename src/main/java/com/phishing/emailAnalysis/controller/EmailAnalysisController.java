@@ -1,6 +1,7 @@
 package com.phishing.emailAnalysis.controller;
 
 import com.phishing.emailAnalysis.dto.EmailAnalysisRequest;
+import com.phishing.emailAnalysis.dto.EmailAnalysisResponse;
 import com.phishing.emailAnalysis.service.EmailAnalysisService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,7 @@ public class EmailAnalysisController {
     }
 
     @PostMapping("/scan")
-    public String scanEmail(@Valid @RequestBody EmailAnalysisRequest request){
-        emailAnalysisService.analyzeEmail(request);
-        return "Email analysis started";
+    public EmailAnalysisResponse scanEmail(@Valid @RequestBody EmailAnalysisRequest request){
+        return emailAnalysisService.analyzeEmail(request);
     }
 }
