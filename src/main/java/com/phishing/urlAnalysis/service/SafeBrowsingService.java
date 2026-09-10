@@ -24,6 +24,20 @@ public class SafeBrowsingService {
         this.apiKey = apiKey;
     }
     public SafeBrowsingResult checkUrl(String url){
+    	
+    	 // API key is not configured
+        if (apiKey == null || apiKey.isBlank()) {
+
+            System.out.println(
+                    "Google Safe Browsing API key not configured. "
+                            + "Skipping Safe Browsing scan."
+            );
+
+            return new SafeBrowsingResult(
+                    false,
+                    "UNAVAILABLE"
+            );
+        }
         Map<String, Object> requestBody = Map.of(
                 "client", Map.of(
                         "clientId", "phishing-detection-platform",

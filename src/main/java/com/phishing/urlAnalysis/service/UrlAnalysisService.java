@@ -1,5 +1,6 @@
 package com.phishing.urlAnalysis.service;
 
+import com.phishing.Entities.User;
 import com.phishing.Exception.ScanNotFoundException;
 import com.phishing.urlAnalysis.dto.SafeBrowsingResult;
 import com.phishing.urlAnalysis.dto.UrlScanResponse;
@@ -42,7 +43,7 @@ public class UrlAnalysisService {
         this.riskScoreService = riskScoreService;
     }
 
-    public UrlScanResponse analyzeUrl(String url){
+    public UrlScanResponse analyzeUrl(String url, User currentUser){
         boolean valid = urlValidationService.isValidUrl(url);
         boolean https = valid && httpsCheckService.isHttps(url);
         boolean suspiciousKeyword = valid && keywordDetectionService.containsSuspiciousKeyword(url);
@@ -85,7 +86,8 @@ public class UrlAnalysisService {
                 suspiciousKeyword,
                 suspiciousDomain,
                 ipAddress,
-                resolveIp
+                resolveIp,
+                currentUser
         );
         UrlScan savedScan = urlScanRepository.save(urlScan);
 
@@ -105,20 +107,25 @@ public class UrlAnalysisService {
                 safeBrowsingResult
         );
     }
-    public List<ScanHistoryResponse> getScanHistory() {
+    public List<ScanHistoryResponse> getScanHistory(User currentUser) {
 
         return urlScanRepository
-                .findAllByOrderByScannedAtDesc()
+                .findByUserOrderByScannedAtDesc(currentUser)
                 .stream()
                 .map(ScanHistoryResponse::new)
                 .toList();
     }
 
-    public ScanHistoryResponse getScanById(Long id) {
+    public ScanHistoryResponse getScanById(
+            Long id,
+            User currentUser) {
 
-        UrlScan scan = urlScanRepository.findById(id)
+        UrlScan scan = urlScanRepository
+                .findByIdAndUser(id, currentUser)
                 .orElseThrow(() ->
-                        new ScanNotFoundException("Scan not found with id: " + id)
+                        new ScanNotFoundException(
+                                "Scan not found with id: " + id
+                        )
                 );
 
         return new ScanHistoryResponse(scan);

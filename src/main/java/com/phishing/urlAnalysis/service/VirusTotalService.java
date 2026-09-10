@@ -28,8 +28,21 @@ public class VirusTotalService {
     }
 
     public VirusTotalResult scanUrl(String url) {
+    	
+    	// API key is not configured
+        if (apiKey == null || apiKey.isBlank()) {
+
+            System.out.println(
+                    "VirusTotal API key not configured. Skipping VirusTotal scan."
+            );
+
+            return VirusTotalResult.unavailable();
+        }
+
+    	
 
         try {
+        	
 
             // Step 1: Submit URL to VirusTotal
             MultiValueMap<String, String> formData =
