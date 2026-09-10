@@ -1,5 +1,6 @@
 package com.phishing.emailAnalysis.service;
 
+import com.phishing.Entities.User;
 import com.phishing.emailAnalysis.dto.EmailAnalysisRequest;
 import com.phishing.emailAnalysis.dto.EmailAnalysisResponse;
 import com.phishing.urlAnalysis.dto.UrlScanResponse;
@@ -33,7 +34,8 @@ public class EmailAnalysisService {
     }
 
     public EmailAnalysisResponse analyzeEmail(
-            EmailAnalysisRequest request) {
+            EmailAnalysisRequest request,
+            User user) {
 
         boolean suspiciousKeyword =
                 keywordDetectionService.containsSuspiciousKeyword(
@@ -63,7 +65,7 @@ public class EmailAnalysisService {
         for (String url : extractedUrls) {
 
             UrlScanResponse urlScanResponse =
-                    urlAnalysisService.analyzeUrl(url);
+                    urlAnalysisService.analyzeUrl(url, user);
 
             highestUrlRiskScore = Math.max(
                     highestUrlRiskScore,
