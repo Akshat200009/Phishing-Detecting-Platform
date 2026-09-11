@@ -3,6 +3,7 @@ package com.phishing.emailAnalysis.dto;
 import java.util.List;
 
 public class EmailAnalysisResponse {
+    private Long id;
     private final String sender;
     private final String subject;
     private final boolean suspiciousKeyword;
@@ -13,6 +14,7 @@ public class EmailAnalysisResponse {
     private final String status;
 
     public EmailAnalysisResponse(
+            Long id,
             String sender,
             String subject,
             boolean suspiciousKeyword,
@@ -21,6 +23,7 @@ public class EmailAnalysisResponse {
             List<String> extractUrls,
             int riskScore,
             String status){
+        this.id = id;
         this.sender = sender;
         this.subject = subject;
         this.suspiciousKeyword =suspiciousKeyword;
@@ -31,6 +34,9 @@ public class EmailAnalysisResponse {
         this.status = status;
     }
 
+    public Long getId() {
+        return id;
+    }
     public String getSender() {
         return sender;
     }

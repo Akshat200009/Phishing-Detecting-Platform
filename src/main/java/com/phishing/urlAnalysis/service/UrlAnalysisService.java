@@ -89,6 +89,7 @@ public class UrlAnalysisService {
                 resolveIp,
                 currentUser
         );
+
         UrlScan savedScan = urlScanRepository.save(urlScan);
 
         return new UrlScanResponse(
