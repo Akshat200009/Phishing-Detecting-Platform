@@ -18,4 +18,6 @@ public interface UrlScanRepository extends JpaRepository<UrlScan, Long> {
     long countByUser(User user);
 
     long countByUserAndStatus(User user, String status);
+    
+    long countByStatus(String status);
 }
