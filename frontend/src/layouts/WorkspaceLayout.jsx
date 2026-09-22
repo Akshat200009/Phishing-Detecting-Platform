@@ -1,5 +1,5 @@
 import Brand from '../components/Brand'
 
-export default function WorkspaceLayout({ children, onSignOut }) {
-  return <main className="min-h-screen bg-slate-950 px-6 py-8 text-slate-100 sm:px-10"><header className="mx-auto flex max-w-6xl items-center justify-between"><Brand /><button onClick={onSignOut} className="rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-900 hover:text-white">Sign out</button></header>{children}</main>
+export default function WorkspaceLayout({ activeTool, children, onNavigate, onSignOut }) {
+  return <main className="min-h-screen bg-slate-950 px-6 py-8 text-slate-100 sm:px-10"><header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4"><Brand /><div className="flex items-center gap-2"><nav aria-label="Scanner tools" className="flex rounded-xl bg-slate-900 p-1"><button onClick={() => onNavigate('url')} className={`rounded-lg px-3 py-2 text-sm transition ${activeTool === 'url' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}>URL scan</button><button onClick={() => onNavigate('email')} className={`rounded-lg px-3 py-2 text-sm transition ${activeTool === 'email' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}>Email scan</button></nav><button onClick={onSignOut} className="rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-900 hover:text-white">Sign out</button></div></header>{children}</main>
 }

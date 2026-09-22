@@ -12,4 +12,5 @@ export const api = {
   register: (name, email, password) => request('/api/auth/register', { method: 'POST', body: JSON.stringify({ name, email, password }) }),
   logout: () => request('/api/auth/logout', { method: 'POST' }),
   scanUrl: (url) => request('/api/url/scan', { method: 'POST', body: JSON.stringify({ url }) }),
+  scanEmail: (email) => request('/api/email/scan', { method: 'POST', body: JSON.stringify(email) }),
 }
