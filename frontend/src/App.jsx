@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from './hooks/useAuth'
 import AuthPage from './pages/AuthPage'
+import DashboardPage from './pages/DashboardPage'
 import EmailScannerPage from './pages/EmailScannerPage'
 import UrlScannerPage from './pages/UrlScannerPage'
 
@@ -11,6 +12,7 @@ export default function App() {
   if (!authenticated) return <AuthPage onAuthenticated={signIn} />
 
   const scannerProps = { activeTool: tool, onNavigate: setTool, onSignOut: signOut }
+  if (tool === 'dashboard') return <DashboardPage {...scannerProps} />
   return tool === 'email' ? <EmailScannerPage {...scannerProps} /> : <UrlScannerPage {...scannerProps} />
 }
 /*

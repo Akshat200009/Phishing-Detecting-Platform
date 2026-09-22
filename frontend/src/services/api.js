@@ -13,4 +13,9 @@ export const api = {
   logout: () => request('/api/auth/logout', { method: 'POST' }),
   scanUrl: (url) => request('/api/url/scan', { method: 'POST', body: JSON.stringify({ url }) }),
   scanEmail: (email) => request('/api/email/scan', { method: 'POST', body: JSON.stringify(email) }),
+  getScanReport: () => request('/api/history/reports'),
+  getScanHistory: (filters = {}) => {
+    const query = new URLSearchParams(Object.entries(filters).filter(([, value]) => value))
+    return request(`/api/history${query.size ? `?${query}` : ''}`)
+  },
 }
