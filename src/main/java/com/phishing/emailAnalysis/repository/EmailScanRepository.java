@@ -11,4 +11,5 @@ public interface EmailScanRepository extends JpaRepository<EmailScan, Long> {
 
     List<EmailScan> findAllByUserOrderByScannedAtDesc(User user);
     Optional<EmailScan> findByIdAndUser(Long id, User user);
+    long countByStatus(String status);
 }

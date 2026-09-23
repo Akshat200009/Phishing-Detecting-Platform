@@ -3,7 +3,7 @@ package com.phishing.Controllers;
 import com.phishing.DTO.AdminStatisticsResponse;
 import com.phishing.DTO.ThreatAnalyticsResponse;
 import com.phishing.Services.AdminDashboardService;
-import com.phishing.urlAnalysis.dto.ScanHistoryResponse;
+import com.phishing.scanHistory.dto.ScanHistoryResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

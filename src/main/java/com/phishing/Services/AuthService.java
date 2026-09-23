@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.phishing.DTO.LoginRequest;
+import com.phishing.DTO.LoginResponse;
 import com.phishing.DTO.RegisterRequest;
 import com.phishing.Entities.Role;
 import com.phishing.Entities.User;
@@ -45,7 +46,7 @@ public class AuthService {
 		return userRepo.save(user);
 	}
 	
-	public String loginUser(LoginRequest request) {
+	public LoginResponse loginUser(LoginRequest request) {
 
 	    User user = userRepo
 	            .findByEmail(request.getEmail())
@@ -73,9 +74,11 @@ public class AuthService {
 	        );
 	    }
 
-	    return jwtService.generateToken(
+	    String token = jwtService.generateToken(
 	            user.getEmail(),
 	            user.getRole().name()
 	    );
+
+	    return new LoginResponse(token, "bearer", user.getRole().name());
 	}
 }
